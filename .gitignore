@@ -1,0 +1,9 @@
+# ignore everything but source code files 
+# and gitignore.
+
+*
+
+!*/
+!*.[ch]
+
+!.gitignore
