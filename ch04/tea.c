@@ -34,19 +34,17 @@ int main(int argc, char **argv)
     int append = 0;
 
     for (int opt; (opt = getopt(argc, argv, "a")) != -1; )
-        switch (opt) 
-        {
+        switch (opt) {
             case 'a':
-                append = O_APPEND;
+                append = 1;
                 break;
             default:
                 exitUsage(argv[0]);
-                break;
         }
     
+    int oflags = O_WRONLY | O_CREAT | (append ? O_APPEND : O_TRUNC);
     for (int i = optind; i < argc; i++) {
-        int fd;
-        fd = open(argv[i], O_WRONLY | O_CREAT | append, 0664);
+        int fd = open(argv[i], oflags, 0664);
         if (fd == -1)
             exitErr("open");
         fds[fds_size++] = fd;
