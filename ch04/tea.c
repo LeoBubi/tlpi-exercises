@@ -33,8 +33,9 @@ int main(int argc, char **argv)
 
     int append = 0;
 
-    for (int opt; (opt = getopt(argc, argv, "a")) != -1; ) {
-        switch (opt) {
+    for (int opt; (opt = getopt(argc, argv, "a")) != -1; )
+        switch (opt) 
+        {
             case 'a':
                 append = O_APPEND;
                 break;
@@ -42,7 +43,6 @@ int main(int argc, char **argv)
                 exitUsage(argv[0]);
                 break;
         }
-    }
     
     for (int i = optind; i < argc; i++) {
         int fd;
