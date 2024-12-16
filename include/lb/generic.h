@@ -29,7 +29,6 @@ void __set_program_info(
     const char *release_date,
     const char *authors
 );
-
 #define set_program_info() __set_program_info( \
                                         PROGRAM_NAME, \
                                         VERSION, \
@@ -42,12 +41,11 @@ const proginfo_t* get_program_info(void);
 #define get_program_release_date() get_program_info()->release_date
 #define get_program_authors() get_program_info()->authors
 
-// longopts default completion
+// default longopts
 #define DEFAULT_LAST_OPTS   {"help", no_argument, NULL, INT_MAX-'h'}, \
                             {"version", no_argument, NULL, INT_MAX-'v'}, \
                             {NULL, 0, NULL, 0}
 
-// longopts default last cases
 #define DEFAULT_LAST_OPTS_CASES \
     case (INT_MAX-'h'): \
         help(); \
@@ -62,7 +60,7 @@ const proginfo_t* get_program_info(void);
     default: \
         break
 
-// display version information
+// version information
 #define version() do { \
     fprintf(stdout, \
         PROGRAM_NAME" version "VERSION" ("RELEASE_DATE")\n" \
@@ -70,7 +68,7 @@ const proginfo_t* get_program_info(void);
     exit(EXIT_SUCCESS); \
 } while(0)
 
-// display help
+// help information
 #define help() do { \
     fprintf(stdout, \
         HELP_INFO \

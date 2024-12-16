@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 
+// debug
 extern bool debug;
 #define DEBUG_OPT  {"debug", no_argument, NULL, INT_MAX-'d'}
 #define DEBUG_OPT_CASE \
