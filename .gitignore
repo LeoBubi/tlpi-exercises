@@ -6,4 +6,7 @@
 !*/
 !*.[ch]
 
+build/*
+
 !.gitignore
+!CMakeLists.txt

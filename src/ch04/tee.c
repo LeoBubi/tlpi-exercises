@@ -9,6 +9,16 @@ already exists.
 #define RELEASE_DATE "2024-12-15"
 #define AUTHORS      "Leonardo Brugnano"
 
+#include <lb/error.h>
+#include <lb/generic.h>
+
+#define HELP_INFO   "Usage: "PROGRAM_NAME" [OPTION]... [FILE]...\n" \
+                    "Copy standard input to each FILE, and also to standard output.\n" \
+                    "\n" \
+                    "\n" \
+                    "  -a, --append     append to the given FILEs, do not overwrite\n" \
+                    "      --debug      print additional details for errors\n"
+
 #define _GNU_SOURCE 1
 #include <fcntl.h>
 #include <getopt.h>
@@ -23,51 +33,13 @@ already exists.
 
 #define READ_SIZE 1024
 
-#ifdef loop
-#  undef loop
-#endif
-#define loop while (true)
-
-bool verbose = false;
-
-#define help() do { \
-    fprintf(stdout, \
-        "Usage: "PROGRAM_NAME" [OPTION]... [FILE]...\n" \
-        "Copy standard input to each FILE, and also to standard output.\n" \
-        "\n" \
-        "  -a, --append     append to the given FILEs, do not overwrite\n" \
-        "  -v, --verbose    be verbose with errors\n" \
-        "\n" \
-        "    --help      display help and exit\n" \
-        "    --version   output version information and exit\n" \
-        "\n"); \
-    exit(EXIT_SUCCESS); \
-} while (0)
-
-#define version() do { \
-    fprintf(stdout, \
-        PROGRAM_NAME" version "VERSION" ("RELEASE_DATE")\n" \
-        "Written by "AUTHORS"\n"); \
-    exit(EXIT_SUCCESS); \
-} while(0)
-
-void error_exit(const char *format, ...) 
-{
-    fprintf(stderr, PROGRAM_NAME": ");
-    
-    va_list args;
-    va_start(args, format);
-    vfprintf(stderr, format, args);
-    va_end(args);
-
-    fprintf(stderr, ".\n");
-    if (verbose) perror(NULL);
-    exit(EXIT_FAILURE);
-}
-
 
 int main(int argc, char **argv)
 {
+    set_program_info();
+    
+    /*********************/
+
     int oflag = O_TRUNC;
 
     int fds[argc-1];
@@ -78,13 +50,11 @@ int main(int argc, char **argv)
 
     /* read command-line options */
 
-    const char optstring[] = "av";
+    const char optstring[] = "a";
     const struct option longopts[] = {
         {"append", no_argument, NULL, 'a'},
-        {"verbose", no_argument, NULL, 'v'},
-        {"help", no_argument, NULL, INT_MAX-'h'},
-        {"version", no_argument, NULL, INT_MAX-'v'},
-        {0, 0, 0, 0}
+        DEBUG_OPT,
+        DEFAULT_LAST_OPTS
     };
 
     int optchar;
@@ -93,21 +63,8 @@ int main(int argc, char **argv)
             case 'a':
                 oflag = O_APPEND;
                 break;
-            case 'v':
-                verbose = true;
-                break;
-            case (INT_MAX-'h'):
-                help();
-            case (INT_MAX-'v'):
-                version();
-            case '?':
-                fprintf(stderr, 
-                    PROGRAM_NAME": invalid option -- '%c'\n"
-                    "Try '"PROGRAM_NAME" --help' for more information\n"
-                    , (char)optopt);
-                exit(EXIT_FAILURE);
-            default:
-                break;
+            DEBUG_OPT_CASE;
+            DEFAULT_LAST_OPTS_CASES;
         }
     
     /* open files for writing */
@@ -122,7 +79,7 @@ int main(int argc, char **argv)
     /* start copying */
 
     loop {
-        if ((rb = read(STDOUT_FILENO, buffer, READ_SIZE)) == -1)
+        if ((rb = read(STDIN_FILENO, buffer, READ_SIZE)) == -1)
             error_exit("Error reading standard input");
         
         if (!rb) break;
@@ -134,7 +91,7 @@ int main(int argc, char **argv)
     }
 
     for (int i = 1; i < fds_size; i++) {
-        if (close(fds[i]) == -1 && verbose)
+        if (close(fds[i]) == -1 && debug)
             perror(PROGRAM_NAME": close");
     }
 }
