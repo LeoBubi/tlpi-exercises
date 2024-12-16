@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Set strict compilation flags
 set(STRICT_FLAGS
-    -Wall                     # Enable all standard warnings
+    -Wall                    # Enable all standard warnings
     -Wextra                  # Enable extra warnings
     -Werror                  # Treat warnings as errors
     -pedantic                # Strict ISO C compliance
