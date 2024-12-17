@@ -5,8 +5,8 @@ already exists.
 */
 
 #define PROGRAM_NAME "tee"
-#define VERSION      "0.1"
-#define RELEASE_DATE "2024-12-15"
+#define VERSION      "1.0"
+#define RELEASE_DATE "2024-12-16"
 #define AUTHORS      "Leonardo Brugnano"
 
 #include <lb/error.h>
