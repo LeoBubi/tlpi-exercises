@@ -15,7 +15,6 @@ already exists.
 #define HELP_INFO   "Usage: "PROGRAM_NAME" [OPTION]... [FILE]...\n" \
                     "Copy standard input to each FILE, and also to standard output.\n" \
                     "\n" \
-                    "\n" \
                     "  -a, --append     append to the given FILEs, do not overwrite\n" \
                     "      --debug      print additional details for errors\n"
 
