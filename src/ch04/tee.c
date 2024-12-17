@@ -16,7 +16,7 @@ already exists.
                     "Copy standard input to each FILE, and also to standard output.\n" \
                     "\n" \
                     "  -a, --append     append to the given FILEs, do not overwrite\n" \
-                    "      --debug      print additional details for errors\n"
+                    "      --debug      print debug info\n"
 
 #define _GNU_SOURCE 1
 #include <fcntl.h>
