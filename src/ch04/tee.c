@@ -9,9 +9,6 @@ already exists.
 #define RELEASE_DATE "2024-12-16"
 #define AUTHORS      "Leonardo Brugnano"
 
-#include <lb/error.h>
-#include <lb/generic.h>
-
 #define HELP_INFO   "Usage: "PROGRAM_NAME" [OPTION]... [FILE]...\n" \
                     "Copy standard input to each FILE, and also to standard output.\n" \
                     "\n" \
@@ -29,6 +26,10 @@ already exists.
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include <lb/error.h>
+#include <lb/generic.h>
+
 
 #define READ_SIZE 1024
 
